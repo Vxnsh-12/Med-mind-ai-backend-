@@ -1,5 +1,7 @@
 import pandas as pd
 import os
+import pickle
+from sklearn.pipeline import Pipeline
 df = pd.read_csv('kidney_disease.csv')
 
 df = df.drop(columns=['id'])
@@ -166,35 +168,26 @@ print(f"y_train shape: {y_train.shape}")
 print(f"y_test shape: {y_test.shape}")
 
 from sklearn.preprocessing import StandardScaler
-scaler = StandardScaler()
-X_train_scaled = scaler.fit_transform(X_train)
-X_test_scaled = scaler.transform(X_test)
-
-print("Categorical feature 'pc' encoded and features scaled successfully using StandardScaler.")
-print(f"X_train_scaled shape: {X_train_scaled.shape}")
-print(f"X_test_scaled shape: {X_test_scaled.shape}")
-
 from sklearn.decomposition import PCA
-
-pca = PCA(n_components=min(X_train_scaled.shape[1], X_train_scaled.shape[0]))
-print("PCA model instantiated.")
-
-X_train_pca = pca.fit_transform(X_train_scaled)
-X_test_pca = pca.transform(X_test_scaled)
-
-print("PCA applied successfully.")
-print(f"X_train_pca shape: {X_train_pca.shape}")
-print(f"X_test_pca shape: {X_test_pca.shape}")
-
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix, classification_report
+from sklearn.model_selection import cross_val_score
+import numpy as np
 
-knn_classifier = KNeighborsClassifier(n_neighbors=5)
+# Create a pipeline with scaling, PCA, and KNN
+pipeline = Pipeline([
+    ('scaler', StandardScaler()),
+    ('pca', PCA(n_components=min(X_train.shape[1], X_train.shape[0]))),
+    ('knn', KNeighborsClassifier(n_neighbors=5))
+])
 
-knn_classifier.fit(X_train_pca, y_train)
+# Train the pipeline
+pipeline.fit(X_train, y_train)
 
-y_pred = knn_classifier.predict(X_test_pca)
+# Make predictions
+y_pred = pipeline.predict(X_test)
 
+# Evaluate performance
 accuracy = accuracy_score(y_test, y_pred)
 precision = precision_score(y_test, y_pred)
 recall = recall_score(y_test, y_pred)
@@ -202,7 +195,7 @@ f1 = f1_score(y_test, y_pred)
 conf_matrix = confusion_matrix(y_test, y_pred)
 class_report = classification_report(y_test, y_pred)
 
-print("k-NN Classifier Performance (k=5):")
+print("Pipeline (StandardScaler + PCA + KNN) Performance (k=5):")
 print(f"Accuracy: {accuracy:.4f}")
 print(f"Precision: {precision:.4f}")
 print(f"Recall: {recall:.4f}")
@@ -210,29 +203,11 @@ print(f"F1-Score: {f1:.4f}")
 print("\nConfusion Matrix:\n", conf_matrix)
 print("\nClassification Report:\n", class_report)
 
-from sklearn.model_selection import cross_val_score
-import numpy as np
+# Save the model
+filename = 'kidney_model.pkl'
+pickle.dump(pipeline, open(filename, 'wb'))
+print(f"Model saved as {filename}")
 
-k_values = list(range(1, 30))
-accuracies = []
-
-for k in k_values:
-    knn = KNeighborsClassifier(n_neighbors=k)
-
-    scores = cross_val_score(knn, X_train_pca, y_train, cv=5, scoring='accuracy')
-    accuracies.append(scores.mean())
-
-optimal_k_index = np.argmax(accuracies)
-optimal_k = k_values[optimal_k_index]
-
-print(f"Optimal k value: {optimal_k}")
-print(f"Accuracy with optimal k: {accuracies[optimal_k_index]:.4f}")
-
-plt.figure(figsize=(10, 6))
-plt.plot(k_values, accuracies, marker='o', linestyle='-')
-plt.title('k-NN Accuracy vs. k Value')
-plt.xlabel('Number of Neighbors (k)')
-plt.ylabel('Cross-Validation Accuracy')
-plt.xticks(np.arange(1, 30, 2)) # Show ticks for odd k values
-plt.grid(True)
-plt.show()
+# Optional: verify optimal k with cross-validation on pipeline (simplified)
+# Note: Cross-validation on pipeline is robust but might be slow. 
+# Since the goal is mainly to save the model, checking performance with k=5 is enough as initial step.
