@@ -1,0 +1,22 @@
+PATIENT NAME: John Doe
+AGE: 45
+GENDER: Male
+DATE: 2024-02-09
+
+HEMATOLOGY PROFILE
+Hemoglobin: 13.5 g/dL (Reference: 13.0 - 17.0)
+Total WBC Count: 7500 /cmm (Reference: 4000 - 11000)
+
+LIPID PROFILE
+Total Cholesterol: 210 mg/dL (Reference: < 200)
+HDL Cholesterol: 45 mg/dL (Reference: > 40)
+LDL Cholesterol: 145 mg/dL (Reference: < 100)
+Triglycerides: 160 mg/dL (Reference: < 150)
+
+DIABETES MARKERS
+Fasting Blood Sugar: 110 mg/dL (Reference: 70 - 100)
+Post Prandial Blood Sugar: 150 mg/dL (Reference: < 140)
+HbA1c: 6.2 % (Reference: < 5.7)
+
+BLOOD PRESSURE
+Result: 135/85 mmHg (Reference: < 120/80)
