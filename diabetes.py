@@ -1,12 +1,14 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import seaborn as sns  
+import seaborn as sns
+import pickle
 
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report, roc_auc_score, roc_curve
+from sklearn.pipeline import Pipeline
 
 df = pd.read_csv("diabetes.csv")
 print("First 5 rows of the dataset:")
@@ -27,18 +29,23 @@ sns.countplot(data=df, x='Outcome', palette='Set2')
 plt.title("Diabetes Outcome Distribution (0 = No, 1 = Yes)")
 plt.xlabel("Outcome")
 plt.ylabel("Count")
-plt.show()
+# plt.show() # Commented out to avoid blocking execution
 
 X = df.drop('Outcome', axis=1)
 y = df['Outcome']
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-scaler = StandardScaler()
-X_train = scaler.fit_transform(X_train)
-X_test = scaler.transform(X_test)
-model = LogisticRegression()
+
+# Create a pipeline with StandardScaler and LogisticRegression
+model = Pipeline([
+    ('scaler', StandardScaler()),
+    ('classifier', LogisticRegression())
+])
+
+# Fit the pipeline
 model.fit(X_train, y_train)
 
+# Predict using the pipeline (scaling is applied automatically)
 y_pred = model.predict(X_test)
 print("Accuracy:", accuracy_score(y_test, y_pred))
 print("\nClassification Report:\n", classification_report(y_test, y_pred))
@@ -48,7 +55,7 @@ sns.heatmap(confusion_matrix(y_test, y_pred), annot=True, fmt='d', cmap='Blues')
 plt.title("Confusion Matrix")
 plt.xlabel("Predicted")
 plt.ylabel("Actual")
-plt.show()
+# plt.show() # Commented out to avoid blocking execution
 
 y_probs = model.predict_proba(X_test)[:, 1]
 fpr, tpr, thresholds = roc_curve(y_test, y_probs)
@@ -61,4 +68,10 @@ plt.xlabel("False Positive Rate")
 plt.ylabel("True Positive Rate")
 plt.title("ROC Curve")
 plt.legend()
-plt.show()
+# plt.show() # Commented out to avoid blocking execution
+
+# Save the model to a pickle file
+with open('diabetes_model.pkl', 'wb') as file:
+    pickle.dump(model, file)
+
+print("Model saved to diabetes_model.pkl")
