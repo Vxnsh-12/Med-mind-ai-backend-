@@ -1,0 +1,22 @@
+PATIENT NAME: Robert Davis
+AGE: 60
+GENDER: Male
+DATE: 2024-02-10
+
+HEMATOLOGY PROFILE
+Hemoglobin: 11.5 g/dL (Reference: 13.0 - 17.0)
+Total WBC Count: 12000 /cmm (Reference: 4000 - 11000)
+
+LIPID PROFILE
+Total Cholesterol: 260 mg/dL (Reference: < 200)
+HDL Cholesterol: 30 mg/dL (Reference: > 40)
+LDL Cholesterol: 180 mg/dL (Reference: < 100)
+Triglycerides: 250 mg/dL (Reference: < 150)
+
+DIABETES MARKERS
+Fasting Blood Sugar: 160 mg/dL (Reference: 70 - 100)
+Post Prandial Blood Sugar: 220 mg/dL (Reference: < 140)
+HbA1c: 8.5 % (Reference: < 5.7)
+
+BLOOD PRESSURE
+Result: 160/100 mmHg (Reference: < 120/80)

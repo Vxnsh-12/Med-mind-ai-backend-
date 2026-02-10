@@ -1,0 +1,22 @@
+PATIENT NAME: Jane Smith
+AGE: 30
+GENDER: Female
+DATE: 2024-02-10
+
+HEMATOLOGY PROFILE
+Hemoglobin: 14.2 g/dL (Reference: 13.0 - 17.0)
+Total WBC Count: 6000 /cmm (Reference: 4000 - 11000)
+
+LIPID PROFILE
+Total Cholesterol: 180 mg/dL (Reference: < 200)
+HDL Cholesterol: 55 mg/dL (Reference: > 40)
+LDL Cholesterol: 90 mg/dL (Reference: < 100)
+Triglycerides: 110 mg/dL (Reference: < 150)
+
+DIABETES MARKERS
+Fasting Blood Sugar: 85 mg/dL (Reference: 70 - 100)
+Post Prandial Blood Sugar: 110 mg/dL (Reference: < 140)
+HbA1c: 5.0 % (Reference: < 5.7)
+
+BLOOD PRESSURE
+Result: 115/75 mmHg (Reference: < 120/80)
